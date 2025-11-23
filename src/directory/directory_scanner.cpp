@@ -1,7 +1,9 @@
 #include "../../include/directory/directory_scanner.hpp"
+#include "../../include/file/file_verifier.hpp"
 #include <iostream>
+#include <stdexcept>
 
-directory_scanner::directory_scanner( std::filesystem::path _path ){
+bool directory_scanner::path_exist( std::filesystem::path _path ){
 bool is_valid = true;
 
     if( !(std::filesystem::exists( _path )) ){
@@ -14,17 +16,19 @@ bool is_valid = true;
         is_valid = false;
     }
 
-    if(!is_valid) { std::cout << "\n"; return;}
+    if(!is_valid) { std::cout << "\n"; return false;}
 
-    this->directory_path = _path;
+    return true;
 }
 
-bool directory_scanner::scan_for_txt(){
+std::vector<std::filesystem::path> directory_scanner::retrieve_path_to_txt_files( std::filesystem::path _path ){
+    if(!path_exist(_path)){ throw std::runtime_error("ERROR: Path doesn't exist!"); }
     
-    for(const auto &entry : std::filesystem::directory_iterator(this->directory_path)){
-        if( entry.path().extension().string() == ".txt" )
-            return true;
-    }
-
-    return false;
+    std::vector<std::filesystem::path> vector_of_paths;
+    for( const auto &entry : std::filesystem::directory_iterator(_path) )
+        if(file_verifier::verify_if_txt(entry.path()))
+            vector_of_paths.push_back(entry.path());
+    
+    if(vector_of_paths.size() == 0){ std::cout << "INFO: There's no .txt file in the specified directory\n\n";}
+    return vector_of_paths;
 }

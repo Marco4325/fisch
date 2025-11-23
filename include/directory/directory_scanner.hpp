@@ -1,13 +1,12 @@
 #pragma once
 #include <filesystem>
-#include <string>
+#include <vector>
 
 class directory_scanner{
     private:
-        std::filesystem::path directory_path;
+        static bool path_exist( std::filesystem::path _path );
 
     public:
-        directory_scanner( std::filesystem::path _path );
-        bool scan_for_txt();
+        static std::vector<std::filesystem::path> retrieve_path_to_txt_files( std::filesystem::path _path );
 
 };
