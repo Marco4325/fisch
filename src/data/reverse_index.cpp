@@ -13,9 +13,9 @@ void reverse_index::save_word_to_id_from_txt_files( std::vector<std::filesystem:
             auto value_returned = this->data_storage.find(word);
             
             if(value_returned == this->data_storage.end()) { // VALOR NÃO EXISTE
-                this->data_storage[word].insert(i);
+                this->data_storage[word].insert(i + 1);
             }else{
-                this->data_storage.at(word).insert(i);
+                this->data_storage.at(word).insert(i + 1);
             }
             
         }
