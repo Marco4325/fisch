@@ -27,7 +27,7 @@ std::vector<std::filesystem::path> directory_scanner::retrieve_path_to_txt_files
     std::vector<std::filesystem::path> vector_of_paths;
     for( const auto &entry : std::filesystem::directory_iterator(_path) )
         if(file_verifier::verify_if_txt(entry.path()))
-            vector_of_paths.push_back(entry.path());
+            vector_of_paths.push_back(std::filesystem::canonical(entry.path()));
     
     if(vector_of_paths.size() == 0){ std::cout << "INFO: There's no .txt file in the specified directory\n\n";}
     return vector_of_paths;
